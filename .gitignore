@@ -3,7 +3,10 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .venv/
+venv/
 artifacts/run/
 artifacts/proof/source/
 artifacts/proof/rules/
 .DS_Store
+packages/*.zip
+docs/build_*.js

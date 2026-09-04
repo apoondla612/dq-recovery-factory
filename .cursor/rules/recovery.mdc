@@ -1,0 +1,29 @@
+---
+description: Recovery factory operating model. Apply in every session.
+alwaysApply: true
+---
+
+You are implementing DQ-RCV-URS-001 and DQ-RCV-DS-001 in this repository.
+
+The two parent documents and everything under specs/ are inputs. They are not yours to edit unless a human opens a specification change.
+
+## Loop
+
+1. Read the requirement and its must-not list.
+2. Change only factory code under src/dq_recovery/ or add a regression fixture under tests/.
+3. Run the named acceptance command. It exits 0 or you are not done.
+4. If a gate is wrong, stop. Do not weaken it.
+
+## Must not
+
+- Invent an acceptance criterion.
+- Edit specs/ or the parent URS/design to match an implementation.
+- Default an unclassified record kind into the expression grammar.
+- Cluster on semantic hash.
+- Report a record as matched when parse_status is not complete.
+- Name a rule type.
+- Choose between two readings. Emit both.
+- Relax a gate so the build passes.
+
+One prompt shape: Implement REQ-R0x against specs/. Stop when tests.test_<name> exits 0. Do not change acceptance.
+Never: recover these mappings into rules.

@@ -1,35 +1,48 @@
 # Recovery Factory (stream 1)
 
-Implementation of **DQ-RCV-URS-001** and **DQ-RCV-DS-001** against the sealed ten-mapping pilot export `Test-Mappings-Export`.
+Clean implementation of **DQ-RCV-URS-001** and **DQ-RCV-DS-001**.
 
-The two documents are the system of record. Specs under `specs/` are those documents sliced into the six human-owned decisions. Code implements them. Code does not rewrite them to make a test pass.
+Three artifacts are inputs. None of them is a prompt.
 
-## One command
-
-```bash
-PYTHONPATH=src python -m dq_recovery.cli recover \
-  --export packages/Test-Mappings-Export.zip \
-  --out artifacts/proof \
-  --repo .
+```
+sealed XML zip
+requirements (URS)
+solution design
+        ↓
+   frozen specs/     ← humans own these
+        ↓
+   factory code      ← Cursor implements against the specs
+        ↓
+   named unittest    ← the only acceptance
+        ↓
+   evidence pack     ← rules, matrix, coverage, questions, run-manifest
+        ↓
+   human ratification ← name a type, settle a reading
 ```
 
-## Proof on the sealed zip (this workspace run)
+Cursor is the mechanic. The URS and the design are the drawing.
+The zip is the part on the bench. The unit test is the torque spec.
+A person still stamps the type name.
 
-| Denominator | Value |
-|---|---|
-| Structural elements | 52,313 |
-| Structural attributes | 249,774 |
-| Non-whitespace text nodes | 0 |
-| Technical-logic records | 2,764 |
-| Primary rules (REQ-R00) | 108 |
-| Companions | 336 |
-| Ambiguous endpoints | 65 |
-| Shape clusters | 81 |
-| Round-trip passed | 108 / 108 |
-| Matched rule types | 0 (naming is ratification; none named) |
+## One-time setup
 
-Record kinds regenerated from the zip: expression 2,084, lookup-condition 235, filter-condition 5, join-condition 11, sql-query 194, update-dynamic-cache-condition 235.
+```bash
+git clone git@github.com:apoondla612/dq-recovery-factory.git
+cd dq-recovery-factory
+python3 -m venv .venv && source .venv/bin/activate
+pip install lxml
+cp /path/to/Test-Mappings-Export.zip packages/Test-Mappings-Export.zip
+```
 
-## Agentic rule
+Point Cursor at this repo. `.cursor/rules/recovery.mdc` is always-on.
 
-An agent may change code and tests. An agent may not author acceptance criteria, rewrite `specs/`, name a rule type, choose a reading, or relax a gate.
+## Commands
+
+```bash
+export PYTHONPATH=src
+python -m unittest discover -s tests -q
+python -m dq_recovery.cli recover --export packages/Test-Mappings-Export.zip --out artifacts/proof --repo .
+```
+
+See `IMPLEMENTATION.md` for REQ → module → test.
+See `AGENTS.md` for the must-not list.
